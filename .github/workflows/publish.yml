@@ -10,7 +10,9 @@ name: Publish image
 #
 # Required repo secrets (Settings → Secrets and variables → Actions):
 #   DOCKERHUB_USERNAME  e.g. vwuilbea
-#   DOCKERHUB_TOKEN     a Docker Hub access token with Read/Write (Account → Security)
+#   DOCKERHUB_TOKEN     Docker Hub access token with Read/Write — used to push the image
+#   DOCKERHUB_PASSWORD  account password (or a full-scope PAT if 2FA is on) — used ONLY to
+#                       update the Hub description; the /v2 description API rejects plain tokens
 
 on:
   push:
@@ -77,7 +79,8 @@ jobs:
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          # The description API needs the account password (or a full-scope PAT), not the push token.
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: ${{ env.IMAGE }}
           short-description: "Maintained Apache + mod_auth_openidc base image — config-free OIDC reverse-proxy / gateway"
           readme-filepath: ./README.md
