@@ -1,0 +1,40 @@
+# Example virtual host for the apache-oidc image.
+# Protects an upstream app behind OpenID Connect (Keycloak, Auth0, etc.) and
+# injects the access token to a backend. Values come from environment variables.
+#
+# Use it either way:
+#   - bake it:   COPY this to /etc/apache2/sites-available/app.conf && a2ensite app
+#   - mount it:  -v ./vhost.conf:/etc/apache2/sites-enabled/app.conf:ro
+#
+# Required env vars: SERVER_NAME, OIDC_METADATA_URL, OIDC_CLIENT, OIDC_SECRET,
+#                    OIDC_CRYPT, UPSTREAM (e.g. http://app:8080)
+
+<VirtualHost *:80>
+    ServerName ${SERVER_NAME}
+
+    # Behind a TLS-terminating proxy (Traefik/nginx)? Honour the forwarded scheme.
+    OIDCXForwardedHeaders X-Forwarded-Proto X-Forwarded-Host X-Forwarded-Port
+
+    OIDCProviderMetadataURL ${OIDC_METADATA_URL}
+    OIDCClientID            ${OIDC_CLIENT}
+    OIDCClientSecret        ${OIDC_SECRET}
+    OIDCRedirectURI         /redirect_uri
+    OIDCCryptoPassphrase    ${OIDC_CRYPT}
+    OIDCScope               "openid email profile"
+    OIDCSessionType         server-cache
+
+    ProxyRequests     Off
+    ProxyPreserveHost On
+    ProxyPass /redirect_uri !
+
+    <Location />
+        AuthType         openid-connect
+        Require          valid-user
+        RequestHeader    set Authorization "Bearer %{OIDC_ACCESS_TOKEN}e"
+    </Location>
+    ProxyPass        / ${UPSTREAM}/
+    ProxyPassReverse / ${UPSTREAM}/
+
+    ErrorLog  /dev/stderr
+    CustomLog /dev/stdout combined
+</VirtualHost>

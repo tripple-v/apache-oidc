@@ -1,0 +1,11 @@
+apache-oidc
+Copyright 2026 Valentin Wuilbeaux
+
+This product includes software developed as an Apache 2.4 + mod_auth_openidc
+base image. It is distributed under the Apache License, Version 2.0 (see LICENSE).
+
+This image packages, but does not modify, third-party software distributed under
+their own licenses, notably:
+  - Apache HTTP Server (Apache License 2.0)
+  - mod_auth_openidc (Apache License 2.0)
+  - Debian base image and its packages (respective licenses)
