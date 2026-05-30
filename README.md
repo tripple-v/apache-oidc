@@ -147,15 +147,31 @@ This image **does not ship a certificate or private key**. Pick one:
 
 | Tag | Meaning |
 |---|---|
-| `1` | Latest of major line 1 (recommended to pin) |
-| `latest` | Latest build |
+| `1.0.0` | Exact, **immutable** release — pin for full reproducibility |
+| `1.0` | Latest patch of `1.0.x` |
+| `1` | Latest minor+patch of major `1` — good default to pin |
+| `latest` | Latest release |
+| `edge` | Latest commit on `main` (preview, may be unstable) |
 
-Pin a major (`:1`) for stability; rebuild periodically to receive Debian/OpenSSL security
-updates.
+Releases are cut from semver git tags (`vX.Y.Z`). Pin `:1` for auto security/patch updates, or
+`:1.0.0` to freeze. Rebuilds (re)publish to pick up Debian/OpenSSL fixes.
 
 ## Build & publish (maintainer)
 
-Multi-arch build straight to the registry:
+Publishing is automated by GitHub Actions ([`.github/workflows/publish.yml`](.github/workflows/publish.yml)):
+
+- **Push to `main`** → builds multi-arch (amd64 + arm64), pushes `:edge`, and syncs this
+  README to the Docker Hub description.
+- **Push a tag `vX.Y.Z`** → publishes `:X.Y.Z`, `:X.Y`, `:X` and `:latest`. Cut a release with:
+  ```bash
+  git tag v1.0.0 && git push origin v1.0.0
+  ```
+
+Requires two repo secrets: `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` (a Docker Hub access
+token with Read/Write).
+
+<details>
+<summary>Manual build (fallback)</summary>
 
 ```bash
 docker login
@@ -166,6 +182,7 @@ docker buildx build \
   -t vwuilbea/apache-oidc:latest \
   --push .
 ```
+</details>
 
 ## Contributing
 
