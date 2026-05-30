@@ -1,8 +1,11 @@
 # apache-oidc
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/vwuilbea/apache-oidc)](https://hub.docker.com/r/vwuilbea/apache-oidc)
-[![Image Size](https://img.shields.io/docker/image-size/vwuilbea/apache-oidc/latest)](https://hub.docker.com/r/vwuilbea/apache-oidc)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+[![Docker Hub](https://img.shields.io/docker/v/vwuilbea/apache-oidc?sort=semver&logo=docker&label=Docker%20Hub&color=2496ED)](https://hub.docker.com/r/vwuilbea/apache-oidc)
+[![Image size](https://img.shields.io/docker/image-size/vwuilbea/apache-oidc?sort=semver)](https://hub.docker.com/r/vwuilbea/apache-oidc/tags)
+[![Pulls](https://img.shields.io/docker/pulls/vwuilbea/apache-oidc)](https://hub.docker.com/r/vwuilbea/apache-oidc)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/tripple-v/apache-oidc/blob/main/LICENSE)
+
+**Source:** [github.com/tripple-v/apache-oidc](https://github.com/tripple-v/apache-oidc) · **Image:** [`vwuilbea/apache-oidc`](https://hub.docker.com/r/vwuilbea/apache-oidc)
 
 A small, **maintained** Apache HTTP Server + [`mod_auth_openidc`](https://github.com/OpenIDC/mod_auth_openidc)
 base image. Drop it in front of any web app to add **OpenID Connect** login (Keycloak, Auth0,
@@ -77,7 +80,7 @@ services:
 > **Tip:** Apache expands `${VAR}` in the config from environment variables, so the *same*
 > vhost file works across environments by changing env values only — no rebuild.
 
-A complete, ready-to-edit vhost is in [`examples/vhost.conf.example`](examples/vhost.conf.example).
+A complete, ready-to-edit vhost is in [`examples/vhost.conf.example`](https://github.com/tripple-v/apache-oidc/blob/main/examples/vhost.conf.example).
 
 ## Full example: gateway + app + Keycloak
 
@@ -109,7 +112,7 @@ services:
     ports: ["8081:8080"]
 ```
 
-Use [`examples/vhost.conf.example`](examples/vhost.conf.example) as `vhost.conf`, create a
+Use [`examples/vhost.conf.example`](https://github.com/tripple-v/apache-oidc/blob/main/examples/vhost.conf.example) as `vhost.conf`, create a
 `demo` realm + `demo-client` in Keycloak, then open <http://localhost:8080> → you'll be
 redirected to Keycloak to log in, then proxied to the app.
 
@@ -158,7 +161,7 @@ Releases are cut from semver git tags (`vX.Y.Z`). Pin `:1` for auto security/pat
 
 ## Build & publish (maintainer)
 
-Publishing is automated by GitHub Actions ([`.github/workflows/publish.yml`](.github/workflows/publish.yml)):
+Publishing is automated by GitHub Actions ([`.github/workflows/publish.yml`](https://github.com/tripple-v/apache-oidc/blob/main/.github/workflows/publish.yml)):
 
 - **Push to `main`** → builds multi-arch (amd64 + arm64), pushes `:edge`, and syncs this
   README to the Docker Hub description.
@@ -191,4 +194,4 @@ base image. Please don't commit certificates or secrets.
 
 ## License
 
-[Apache License 2.0](LICENSE) — see also [NOTICE](NOTICE).
+[Apache License 2.0](https://github.com/tripple-v/apache-oidc/blob/main/LICENSE) — see also [NOTICE](https://github.com/tripple-v/apache-oidc/blob/main/NOTICE).
