@@ -15,7 +15,10 @@ LABEL org.opencontainers.image.title="apache-oidc" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.source="https://github.com/tripple-v/apache-oidc"
 
+# `upgrade` pulls the security fixes published since the debian base image was built, so a rebuild
+# is never behind Debian's security archive (1.0.1: apache2 2.4.68, openssl, mod_auth_openidc, ...).
 RUN apt-get update \
+ && apt-get upgrade -y --no-install-recommends \
  && apt-get install -y --no-install-recommends \
       apache2 \
       libapache2-mod-auth-openidc \
